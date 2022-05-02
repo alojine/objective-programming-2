@@ -154,7 +154,7 @@ Sukuriamas failas (studentai + studentu kiekis) į jį sugeneruojami vardai, pav
 |LIST RŪŠIAVIMAS      |   0.0001098 s   |   0.000711 s  |  0.0170997 s  |  0.18972 s  |   2.08854 s |
 
 
-### Programos veikomo laikas be generavimo ###
+### Programos veikimo laikas be generavimo ###
 
 |                     |       1000      |      10000     |     100000    |   1000000   |   10000000  |
 | ------------------- | --------------- | -------------- | ------------- | ----------- | ----------- |
@@ -169,3 +169,22 @@ Parametrai:
 - CPU: Intel Core i5-10300H 2.5 GHz
 - SSD: 476GB SAMSUNG MZVLQ512HALU
 - RAM: 8GB 2933MHz
+
+# v1.1
+Šioje versijoje programa atlieka tas pačias funkcijas, bet yra pereita nuo **struct** prie **class**.
+
+### Programos veikimo laikao palyginimas pagal optimizavimo flagus ###
+
+|                     |       1000      |      10000     |     100000    |   1000000   |
+| ------------------- | --------------- | -------------- | ------------- | ----------- |
+|O1                   |   0.078418 s    |   0.67451 s    |  5.5803 s     |  46.882 s   |
+|O2                   |   0.054854 s    |   0.63873 s    |  5.2878 s     |  45.559 s   |
+|O3                   |   0.102727 s    |   0.50261 s    |  4.7109 s     |  43.323 s   |
+
+### Programos veikomo laikao palyginimas **struct** ir **class** ###
+
+|       vector        |     100000    |   1000000   |
+| ------------------- | ------------- | ----------- |
+|struct               |  0.54483 s    |  5.3933 s   |
+|class                |  4.7109 s     |  43.323 s   |
+
