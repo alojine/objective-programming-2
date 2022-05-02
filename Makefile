@@ -1,5 +1,5 @@
-run: Source.o functions.o
-	g++ Source.cpp functions.cpp -o run
+run: Source.o functions.o Studentas.o
+	g++ -o run Source.o -O1
 
 functions.o: functions.cpp
 	g++ -c functions.cpp
@@ -7,4 +7,8 @@ functions.o: functions.cpp
 Source.o: Source.cpp
 	g++ -c Source.cpp
 
-clean: rm *.o run
+Studentas.o: Studentas.cpp
+	g++ -c Studentas.cpp
+
+clean: 
+	del *.o run.exe

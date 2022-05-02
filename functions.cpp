@@ -1,37 +1,75 @@
 #include "headers.h"
+#include "Studentas.h"
+#include "functions.h"
 
-void input(data& s) {
-	cout << "Iveskite studento varda: "; cin >> s.vardas;
-	cout << "Iveskite studento pavarde: "; cin >> s.pavarde;
-	cout << "Iveskite pazymiu kieki: ";
-	int pazimys;
-	int kiek = sveikojoApsauga(kiek);
-	for (int i = 0; i < kiek; i++) {
-		pazimys = genrand();
-		s.p.push_back(pazimys);
-		cout << "Ivestas " << i + 1 << "-asis pazimys: " << pazimys << endl;
+//Skaiciavimai
+double vidurkis(vector<int> p, int egz) {
+	double v = 0;
+	for (auto& el : p) {
+		v += el;
 	}
-	s.p.shrink_to_fit();
 
-	int it;
-	char check;
-	do {
-		it = kiek;
-		cout << "Jei noretumete ivesti dar pazymiu iveskite 'y', jei ne 'n': ";
-		check = charApsauga(check);
+	if (p.size() != 0) v = v / (p.size() * 1.0) * 0.4 + egz * 0.6;
+	else v = egz * 0.6;
 
-		if (check == 'y') {
-			addmark(s, it, kiek);
-			for (int i = it; i < kiek; i++) {
-				cout << "Ivestas " << i + 1 << "-asis pazimys: " << s.p[i] << endl;
-			}
-		}
-	} while (check != 'n');
-
-	s.egz = genrand();
-	cout << "Egzamino vertinimas: " << s.egz << endl;
-
+	return v;
 };
+
+double mediana(vector<int> p, int egz) {
+
+	double m, s;
+	sort(p.begin(), p.end());
+	if (p.size() % 2 == 0 && p.size() != 0) {
+		m = (double)((p[p.size() / 2] + p[p.size() / 2 - 1]) / 2);
+		s = (m * 4 / 10) + (egz * 0.6);
+	}
+	else if (p.size() % 2 != 0 && p.size() != 0) {
+		s = p[p.size() / 2] * 0.4 + egz * 0.6;
+	}
+	else s = egz * 0.6;
+
+	return s;
+};
+
+
+void skaiciavimai(vector<data>& st, char vm) {
+	for (auto& el : st) {
+		if (vm == 'y') el.v = vidurkis(el.p, el.egz);
+		else if (vm == 'n') el.m = mediana(el.p, el.egz);
+		else if (vm == 'a') {
+			el.m = mediana(el.p, el.egz);
+			el.v = vidurkis(el.p, el.egz);
+		}
+	}
+};
+
+
+
+//Apsaugos
+int sveikojoApsauga(int& a) {
+	cin >> a;
+	while (cin.fail()) {
+		cin.clear();
+		cin.ignore();
+		cin >> a;
+	}
+	return a;
+};
+
+char charApsauga(char& a) {
+	do {
+		cin >> a;
+	} while (a != 'y' && a != 'n');
+	return a;
+};
+
+char konteinerioApsauga(char& a) {
+	do {
+		cin >> a;
+
+	} while (a != 'v' && a != 'd' && a != 'l');
+	return a;
+}
 
 int genrand() {
 
@@ -41,31 +79,158 @@ int genrand() {
 	int sk = dist(generator);
 
 	return sk;
+}
+
+// Funkcijos Terminalui
+void Ranka() {
+	vector<data> st;
+	cout << "Jei norite kad programa isvestu vidurki iveskite 'y', jeigu mediana, iveskite 'n': ";
+	char vm = charApsauga(vm);
+
+	cout << "Iveskite studentu skaiciu: ";
+	int studentai = sveikojoApsauga(studentai);
+
+	st.reserve(studentai);
+	for (int i = 0; i < studentai; i++)
+	{
+		data temp;
+		input(temp);
+		st.push_back(temp);
+	}
+	skaiciavimai(st, vm);
+	antraste(vm);
+	for (int i = 0; i < st.size(); i++)
+	{
+		output(st.at(i), vm);
+	}
+
+	st.clear();
+}
+
+
+void input(data& st) {
+	cout << "Iveskite studento varda: "; cin >> st.vardas;
+	cout << "Iveskite studento pavarde: "; cin >> st.pavarde;
+	cout << "Iveskite pazymiu kieki: ";
+	int pazimys;
+	int kiek = sveikojoApsauga(kiek);
+	for (int i = 0; i < kiek; i++) {
+		pazimys = genrand();
+		st.p.push_back(pazimys);
+		cout << "Ivestas " << i + 1 << "-asis pazimys: " << pazimys << endl;
+	}
+	st.p.shrink_to_fit();
+
+	int it;
+	char check;
+	do {
+		it = kiek;
+		cout << "Jei noretumete ivesti dar pazymiu iveskite 'y', jei ne 'n': ";
+		check = charApsauga(check);
+
+		if (check == 'y') {
+			addmark(st, it, kiek);
+			for (int i = it; i < kiek; i++) {
+				cout << "Ivestas " << i + 1 << "-asis pazimys: " << st.p[i] << endl;
+			}
+		}
+	} while (check != 'n');
+
+	st.egz = genrand();
+	cout << "Egzamino vertinimas: " << st.egz << endl;
+
 };
 
-void addmark(data& s, int& it, int& kiek) {
+void addmark(data& st, int& it, int& kiek) {
 	kiek += 1;
 	int pazimys;
-	s.p.reserve(kiek);
+	st.p.reserve(kiek);
 
 	for (int i = it; i < kiek; i++) {
 		pazimys = genrand();
-		s.p.push_back(pazimys);
+		st.p.push_back(pazimys);
 	}
-	s.p.shrink_to_fit();
+	st.p.shrink_to_fit();
 };
 
-void output(data& s, char vm) {
+void output(data& st, char vm) {
 
 	cout << string(60, '-') << std::endl;
-	cout << std::left << std::setw(20) << s.vardas << std::left << std::setw(20) << s.pavarde;
-	if (vm == 'y') cout << std::left << std::setw(23) << std::setprecision(2) << s.v << endl;
-	else if (vm == 'n') cout << std::left << std::setw(20) << std::setprecision(2) << s.m << endl;
+	cout << std::left << std::setw(20) << st.vardas << std::left << std::setw(20) << st.pavarde;
+	if (vm == 'y') cout << std::left << std::setw(23) << std::setprecision(2) << st.v << endl;
+	else if (vm == 'n') cout << std::left << std::setw(20) << std::setprecision(2) << st.m << endl;
 };
 
-//-------------------------------------------------------------------------------------------------------------------
+void antraste(char vm) {
+	if (vm == 'n') cout << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Galutinis (Med.)" << endl;
+	else if (vm == 'y') cout << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Galutinis (Vid.)" << endl;
+};
 
+//------------------------------
 
+void automatinisGen() {
+	char gen = 'y';
+	cout << "(Vidurkis/Mediana) - (y/n) ";
+	char vm = charApsauga(vm);
+	cout << "Kokia skirtymo strategija norite naudoti? 1 - 'y', 2 - 'n': ";
+	char st = charApsauga(st);
+	cout << endl;
+	do {
+		try {
+			vector<Studentas> s;
+			string fname = "studentai";
+			cout << "Iveskite studentu kieki: ";
+			int skiekis = sveikojoApsauga(skiekis);
+			fname += std::to_string(skiekis) + ".txt";
+			auto laikasVisa = hrClock::now();
+			string n = "nuskriaustukai.txt", k = "kietiakai.txt";
+			vector<Studentas> Kieti;
+			vector<Studentas> Vargsai;
+
+			generuotifailus(fname, skiekis, 5);
+			skaitymas(s, fname);
+			sort(s.begin(), s.end(), rikiuotiPazymi);
+			paskirstymas(s, Kieti, Vargsai, vm, st);
+			sort(Kieti.begin(), Kieti.end(), pagal_varda);
+			sort(Vargsai.begin(), Vargsai.end(), pagal_varda);
+
+			buffRasymas(Kieti, k, vm);
+			buffRasymas(Vargsai, n, vm);
+
+			s.clear();
+			Kieti.clear();
+			Vargsai.clear();
+
+			cout << "Visa programa uztruko " << durationDouble(hrClock::now() - laikasVisa).count() << " s" << endl;
+			cout << endl;
+
+			cout << "Ar norite ivesti dar viena faila? (y/n) ";
+			char oneMore = charApsauga(oneMore);
+			gen = oneMore;
+			cout << endl;
+		}
+		catch (std::exception& e) {
+			cout << "Nera tokio failo" << endl;
+		}
+	} while (gen == 'y');
+}
+
+void automatinisBeGen() {
+	vector<Studentas> s;
+	try
+	{
+		cout << "(Vidurkis/Mediana) - (y/n) ";
+		char vm = charApsauga(vm);
+		string kursiokai = "kursiokai.txt";
+		skaitymas(s, "studentai.txt");
+		sort(s.begin(), s.end(), rikiuotiPazymi);
+		buffRasymas(s, kursiokai, vm);
+	}
+	catch (std::exception& e)
+	{
+		cout << "Neteisingas failo pavadinimas" << endl;
+	}
+}
 
 void generuotifailus(string& failopavadinimas, int kiek, int nd) {
 
@@ -96,48 +261,12 @@ void generuotifailus(string& failopavadinimas, int kiek, int nd) {
 	rf.close();
 }
 
-void skaitymas(vector<data>& s, string fname) {
+void skaitymas(vector<Studentas>& s, string fname) {
 	auto laikasSkaitymas = hrClock::now();
 	ifstream fd(fname);
 	if (fd.is_open()) {
-		int nd, egz;
-		int st = 0, mk = 0;
-		string line;
-		std::stringstream buffer;
-		std::getline(fd, line);
-		
-
-		// Nustatomas mokiniu kiekis
-		buffer << line;
-		string reiksme;
-		while (buffer >> reiksme) st++;
-		for (int l = 0; std::getline(fd, line); l++) mk++;
-		fd.clear();
-		fd.seekg(0);
-		std::getline(fd, line);
-
-		data temp;
-		for (int i = 0; i < mk; i++) {
-			fd >> temp.vardas >> temp.pavarde;
-			temp.p.reserve(st - 3);
-			for (int j = 0; j < st - 3; j++) {
-				fd >> nd;
-				temp.p.push_back(nd);
-			}
-			fd >> temp.egz;
-			temp.p.clear();
-			s.push_back(temp);
-		}
-	}
-	fd.close();
-	cout << "Failo nuskaitymas uztruko: " << durationDouble(hrClock::now() - laikasSkaitymas).count() << " s" << endl;
-}
-
-void skaitymas(deque<data>& s, string fname) {
-	auto laikasSkaitymas = hrClock::now();
-	ifstream fd(fname);
-	if (fd.is_open()) {
-		int nd, egz;
+		string vardas, pavarde;
+		int egz, nd;
 		int st = 0, mk = 0;
 		string line;
 		std::stringstream buffer;
@@ -155,94 +284,76 @@ void skaitymas(deque<data>& s, string fname) {
 
 		data temp;
 		for (int i = 0; i < mk; i++) {
-			fd >> temp.vardas >> temp.pavarde;
-			temp.p.reserve(st - 3);
+			fd >> vardas >> pavarde;
+			Studentas studentas(vardas, pavarde);
 			for (int j = 0; j < st - 3; j++) {
 				fd >> nd;
-				temp.p.push_back(nd);
+				studentas.idetiPazymi(nd);
 			}
-			fd >> temp.egz;
-			temp.p.clear();
-			s.push_back(temp);
+			fd >> egz;
+			studentas.gautiEgzaminas(egz);
+			studentas.gautiVidurki();
+			studentas.gautiMediana();
+			s.push_back(studentas);
 		}
 	}
 	fd.close();
 	cout << "Failo nuskaitymas uztruko: " << durationDouble(hrClock::now() - laikasSkaitymas).count() << " s" << endl;
 }
 
-void skaitymas(list<data>& s, string fname) {
-	auto laikasSkaitymas = hrClock::now();
-	ifstream fd(fname);
-	if (fd.is_open()) {
-		int nd, egz;
-		int st = 0, mk = 0;
-		string line;
-		std::stringstream buffer;
-		std::getline(fd, line);
+void paskirstymas(vector<Studentas>& s, vector<Studentas>& Kieti, vector<Studentas>& Vargsai, char vm, char stratType) {
 
+	auto laikasSkirstymas = hrClock::now();
 
-		// Nustatomas mokiniu kiekis
-		buffer << line;
-		string reiksme;
-		while (buffer >> reiksme) st++;
-		for (int l = 0; std::getline(fd, line); l++) mk++;
-		fd.clear();
-		fd.seekg(0);
-		std::getline(fd, line);
+	if (stratType == 'n') {
+		vector<Studentas>::iterator it = s.end();
+		it--;
 
-		data temp;
-		for (int i = 0; i < mk; i++) {
-			fd >> temp.vardas >> temp.pavarde;
-			temp.p.reserve(st - 3);
-			for (int j = 0; j < st - 3; j++) {
-				fd >> nd;
-				temp.p.push_back(nd);
+		if (vm == 'y') {
+			for (auto i = s.size() - 1; i > 0; i--) {
+				if (it->gvidurkis() < 5) {
+					Vargsai.push_back(*it);
+					s.resize(s.size() - 1);
+				}
+				it--;
 			}
-			fd >> temp.egz;
-			temp.p.clear();
-			s.push_back(temp);
 		}
+
+		if (vm == 'n') {
+			for (auto i = s.size() - 1; i > 0; i--) {
+				if (it->gmediana() < 5) {
+					Vargsai.push_back(*it);
+					s.resize(s.size() - 1);
+				}
+				it--;
+			}
+		}
+		Kieti = s;
+		s.clear();
 	}
-	fd.close();
-	cout << "Failo nuskaitymas uztruko: " << durationDouble(hrClock::now() - laikasSkaitymas).count() << " s" << endl;
+
+	else if (stratType == 'y') {
+		if (vm == 'y') {
+			for (auto& el : s) {
+				if (el.gvidurkis() >= 5) Kieti.push_back(el);
+				else Vargsai.push_back(el);
+			}
+		}
+
+		else if (vm == 'n') {
+			for (auto& el : s) {
+				if (el.gmediana() >= 5) Kieti.push_back(el);
+				else Vargsai.push_back(el);
+			}
+		}
+
+	}
+	cout << "Failo skirstymas i grupes uztruko: " << durationDouble(hrClock::now() - laikasSkirstymas).count() << " s" << endl;
 }
 
-void rp(vector<int> p) {
-	for (auto& a : p) {
-		cout << a << " ";
-	}
-}
-
-void buffRasymas(vector<data>& s, string fname, char vm) {
+void buffRasymas(vector<Studentas>& s, string fname, char vm) {
 	auto laikasNuskriaustukai = hrClock::now();
-
-	std::stringstream buffer;
-	buffer << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde";
-	if (vm == 'y') buffer << std::left << std::setw(20) << "Galutinis(Vid.)";
-	else if(vm == 'n') buffer << std::left << std::setw(20) << "Galutinis(Med.)";
-	buffer << endl;
-
-	if (vm == 'y') {
-		for (auto& el : s) {
-			buffer << std::left << std::setw(20) << el.vardas << std::left << std::setw(20) << el.pavarde << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.v << endl;
-		}
-	}
-
-	else if (vm == 'n') {
-		for (auto& el : s) {
-			buffer << std::left << std::setw(20) << el.vardas << std::left << std::setw(20) << el.pavarde << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.m << endl;
-		}
-	}
-
-	buffer.clear();
-
-	buffFaila(fname, buffer);
-	cout << fname << " surasymas uztruko: " << durationDouble(hrClock::now() - laikasNuskriaustukai).count() << " s" << endl;
-
-};
-
-void buffRasymas(deque<data>& s, string fname, char vm) {
-	auto laikasNuskriaustukai = hrClock::now();
+	vector<Studentas>::iterator it;
 
 	std::stringstream buffer;
 	buffer << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde";
@@ -252,41 +363,13 @@ void buffRasymas(deque<data>& s, string fname, char vm) {
 
 	if (vm == 'y') {
 		for (auto& el : s) {
-			buffer << std::left << std::setw(20) << el.vardas << std::left << std::setw(20) << el.pavarde << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.v << endl;
+			buffer << std::left << std::setw(20) << el.vardas() << std::left << std::setw(20) << el.pavarde() << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.gvidurkis() << endl;
 		}
 	}
 
 	else if (vm == 'n') {
 		for (auto& el : s) {
-			buffer << std::left << std::setw(20) << el.vardas << std::left << std::setw(20) << el.pavarde << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.m << endl;
-		}
-	}
-
-	buffer.clear();
-
-	buffFaila(fname, buffer);
-	cout << fname << " surasymas uztruko: " << durationDouble(hrClock::now() - laikasNuskriaustukai).count() << " s" << endl;
-
-};
-
-void buffRasymas(list<data>& s, string fname, char vm) {
-	auto laikasNuskriaustukai = hrClock::now();
-
-	std::stringstream buffer;
-	buffer << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde";
-	if (vm == 'y') buffer << std::left << std::setw(20) << "Galutinis(Vid.)";
-	else if (vm == 'n') buffer << std::left << std::setw(20) << "Galutinis(Med.)";
-	buffer << endl;
-
-	if (vm == 'y') {
-		for (auto& el : s) {
-			buffer << std::left << std::setw(20) << el.vardas << std::left << std::setw(20) << el.pavarde << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.v << endl;
-		}
-	}
-
-	else if (vm == 'n') {
-		for (auto& el : s) {
-			buffer << std::left << std::setw(20) << el.vardas << std::left << std::setw(20) << el.pavarde << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.m << endl;
+			buffer << std::left << std::setw(20) << el.vardas() << std::left << std::setw(20) << el.pavarde() << std::left << std::setw(20) << std::fixed << std::setprecision(2) << el.gmediana() << endl;
 		}
 	}
 
@@ -303,302 +386,12 @@ void buffFaila(string fname, std::stringstream& buffer) {
 	fp.close();
 };
 
-
-void paskirstymas(vector<data>& s, vector<data>& Kieti, vector<data>& Vargsai, char vm, char stratType) {
-
-	auto laikasSkirstymas = hrClock::now();
-
-	if (stratType == 'n') {
-		vector<data>::iterator it = s.end();
-		it--;
-
-		if (vm == 'y') {
-			for (auto i = s.size() - 1; i > 0; i--) {
-				if (it->v < 5) {
-					Vargsai.push_back(*it);
-					s.resize(s.size() - 1);
-				}
-				it--;
-			}
-		}
-
-		if (vm == 'n') {
-			for (auto i = s.size() - 1; i > 0; i--) {
-				if (it->m < 5) {
-					Vargsai.push_back(*it);
-					s.resize(s.size() - 1);
-				}
-				it--;
-			}
-		}
-		Kieti = s;
-		s.clear();
-	}
-	
-	else if (stratType == 'y') {
-		if (vm == 'y') {
-			for (auto& el : s) {
-				if (el.v >= 5) Kieti.push_back(el);
-				else Vargsai.push_back(el);
-			}
-		}
-
-		else if (vm == 'n') {
-			for (auto& el : s) {
-				if (el.m >= 5) Kieti.push_back(el);
-				else Vargsai.push_back(el);
-			}
-		}
-
-	}
-	
-	cout << "Failo skirstymas i grupes uztruko: " << durationDouble(hrClock::now() - laikasSkirstymas).count() << " s" << endl;
+bool pagal_varda(Studentas& a, Studentas& b)
+{
+	return a.vardas() < b.vardas();
 }
 
-void paskirstymas(deque<data>& s, deque<data>& Kieti, deque<data>& Vargsai, char vm, char stratType) {
-
-	auto laikasSkirstymas = hrClock::now();
-
-	if (stratType == 'n') {
-		deque<data>::iterator it = s.end();
-		it--;
-
-		if (vm == 'y') {
-			for (auto i = s.size() - 1; i > 0; i--) {
-				if (it->v < 5) {
-					Vargsai.push_back(*it);
-					s.resize(s.size() - 1);
-				}
-				it--;
-			}
-		}
-
-		if (vm == 'n') {
-			for (auto i = s.size() - 1; i > 0; i--) {
-				if (it->m < 5) {
-					Vargsai.push_back(*it);
-					s.resize(s.size() - 1);
-				}
-				it--;
-			}
-		}
-		Kieti = s;
-		s.clear();
-	}
-
-	else if (stratType == 'y') {
-		if (vm == 'y') {
-			for (auto& el : s) {
-				if (el.v >= 5) Kieti.push_back(el);
-				else Vargsai.push_back(el);
-			}
-		}
-
-		else if (vm == 'n') {
-			for (auto& el : s) {
-				if (el.m >= 5) Kieti.push_back(el);
-				else Vargsai.push_back(el);
-			}
-		}
-
-	}
-
-	cout << "Failo skirstymas i grupes uztruko: " << durationDouble(hrClock::now() - laikasSkirstymas).count() << " s" << endl;
+bool rikiuotiPazymi(Studentas& a, Studentas& b)
+{
+	return a.egzaminas() < b.egzaminas();
 }
-
-void paskirstymas(list<data>& s, list<data>& Kieti, list<data>& Vargsai, char vm, char stratType) {
-
-	auto laikasSkirstymas = hrClock::now();
-
-	if (stratType == 'n') {
-		list<data>::iterator it = s.end();
-		it--;
-
-		if (vm == 'y') {
-			for (auto i = s.size() - 1; i > 0; i--) {
-				if (it->v < 5) {
-					Vargsai.push_back(*it);
-				}
-				it--;
-			}
-		}
-
-		if (vm == 'n') {
-			for (auto i = s.size() - 1; i > 0; i--) {
-				if (it->m < 5) {
-					Vargsai.push_back(*it);
-				}
-				it--;
-			}
-		}
-		s.resize(s.size() - Vargsai.size());
-		Kieti = s;
-		s.clear();
-	}
-
-	else if (stratType == 'y') {
-		if (vm == 'y') {
-			for (auto& el : s) {
-				if (el.v >= 5) Kieti.push_back(el);
-				else Vargsai.push_back(el);
-			}
-		}
-
-		else if (vm == 'n') {
-			for (auto& el : s) {
-				if (el.m >= 5) Kieti.push_back(el);
-				else Vargsai.push_back(el);
-			}
-		}
-
-	}
-
-	cout << "Failo skirstymas i grupes uztruko: " << durationDouble(hrClock::now() - laikasSkirstymas).count() << " s" << endl;
-}
-
-//----------------------------------------------------------------------------------
-
-void failoSkaitymas(ifstream& fr, vector<data>& s, vector<string>& l) {
-
-	string length;
-
-	while ((fr.peek() != '\n') && (fr >> length)) {
-		l.push_back(length);
-	}
-	l.resize(l.size() - 3);
-
-	int pazimys;
-	while (!fr.eof()) {
-		data temp;
-		fr >> temp.vardas >> temp.pavarde;
-		for (auto& el : l) {
-			fr >> pazimys;
-			temp.p.push_back(pazimys);
-		}
-		fr >> temp.egz;
-		temp.n = temp.p.size();
-		s.push_back(temp);
-	}
-
-};
-
-void failoIsvedimas(ofstream& fp, data& s) {
-	fp << std::left << std::setw(20) << s.vardas << std::left << std::setw(20) << s.pavarde << std::left << std::setw(20) << std::setprecision(3) << s.v << std::left << std::setw(20) << std::setprecision(3) << s.m << endl;
-};
-
-
-void failoAntraste(ofstream& fp) {
-
-	fp << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Galutinis (Vid.)" << std::left << std::setw(20) << "Galutinis (Med.)" << endl;
-	fp << string(80, '-') << std::endl;
-};
-
-//-------------------------------------------------------------------------------------------------------------------
-
-int sveikojoApsauga(int& a) {
-	cin >> a;
-	while (cin.fail()) {
-		cin.clear();
-		cin.ignore();
-		cin >> a;
-	}
-	return a;
-};
-
-char charApsauga(char& a) {
-	do {
-		cin >> a;
-	} while (a != 'y' && a != 'n');
-	return a;
-};
-
-char konteinerioApsauga(char& a) {
-	do {
-		cin >> a;
-
-	} while (a != 'v' && a != 'd' && a != 'l');
-	return a;
-}
-//-------------------------------------------------------------------------------------------------------------------
-
-void skaiciavimai(vector<data>& s, char vm) {
-	for (auto& el : s) {
-		if (vm == 'y') el.v = vidurkis(el.p, el.egz);
-		else if (vm == 'n') el.m = mediana(el.p, el.egz);
-		else if (vm == 'a') {
-			el.m = mediana(el.p, el.egz);
-			el.v = vidurkis(el.p, el.egz);
-		}
-	}
-};
-
-void skaiciavimai(deque<data>& s, char vm) {
-	for (auto& el : s) {
-		if (vm == 'y') el.v = vidurkis(el.p, el.egz);
-		else if (vm == 'n') el.m = mediana(el.p, el.egz);
-		else if (vm == 'a') {
-			el.m = mediana(el.p, el.egz);
-			el.v = vidurkis(el.p, el.egz);
-		}
-	}
-};
-
-void skaiciavimai(list<data>& s, char vm) {
-	for (auto& el : s) {
-		if (vm == 'y') el.v = vidurkis(el.p, el.egz);
-		else if (vm == 'n') el.m = mediana(el.p, el.egz);
-		else if (vm == 'a') {
-			el.m = mediana(el.p, el.egz);
-			el.v = vidurkis(el.p, el.egz);
-		}
-	}
-};
-
-double vidurkis(vector<int> p, int egz) {
-	double v = 0;
-	for (auto& el : p) {
-		v += el;
-	}
-
-	if (p.size() != 0) v = v / (p.size() * 1.0) * 0.4 + egz * 0.6;
-	else v = egz * 0.6;
-
-	return v;
-};
-
-double mediana(vector<int> p, int egz) {
-
-	double m, s;
-	sort(p.begin(), p.end());
-	if (p.size() % 2 == 0 && p.size() != 0) {
-		m = (double)((p[p.size() / 2] + p[p.size() / 2 - 1]) / 2);
-		s = (m * 4 / 10) + (egz * 0.6);
-	}
-	else if (p.size() % 2 != 0 && p.size() != 0) {
-		s = p[p.size() / 2] * 0.4 + egz * 0.6;
-	}
-	else s = egz * 0.6;
-
-	return s;
-};
-
-
-
-void antraste(char vm) {
-	if (vm == 'n') cout << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Galutinis (Med.)" << endl;
-	else if (vm == 'y') cout << std::left << std::setw(20) << "Vardas" << std::left << std::setw(20) << "Pavarde" << std::left << std::setw(20) << "Galutinis (Vid.)" << endl;
-};
-
-bool rikiuoti(data a, data b){
-	return a.vardas < b.vardas;
-}
-
-bool rikiuotiPazymi(data a, data b) {
-	return a.egz > b.egz;
-}
-
-
-
-
-
-
