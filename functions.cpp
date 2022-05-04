@@ -177,22 +177,19 @@ void automatinisGen() {
 	cout << endl;
 	do {
 		try {
-			vector<Studentas> s;
-			string fname = "studentai";
+			vector<Studentas> s; vector<Studentas> Kieti; vector<Studentas> Vargsai;	//Klases
+			string fname = "studentai", n = "nuskriaustukai.txt", k = "kietiakai.txt";	//Failai
 			cout << "Iveskite studentu kieki: ";
 			int skiekis = sveikojoApsauga(skiekis);
 			fname += std::to_string(skiekis) + ".txt";
-			auto laikasVisa = hrClock::now();
-			string n = "nuskriaustukai.txt", k = "kietiakai.txt";
-			vector<Studentas> Kieti;
-			vector<Studentas> Vargsai;
-
-			generuotifailus(fname, skiekis, 5);
+			auto laikasVisa = hrClock::now();	//Laikas
+			
+			if (!(egzistuojaFailas(fname))) generuotifailus(fname, skiekis, 5);
 			skaitymas(s, fname);
 			sort(s.begin(), s.end(), rikiuotiPazymi);
 			paskirstymas(s, Kieti, Vargsai, vm, st);
-			sort(Kieti.begin(), Kieti.end(), pagal_varda);
-			sort(Vargsai.begin(), Vargsai.end(), pagal_varda);
+			sort(Kieti.begin(), Kieti.end(), rikiuotiVarda);
+			sort(Vargsai.begin(), Vargsai.end(), rikiuotiVarda);
 
 			buffRasymas(Kieti, k, vm);
 			buffRasymas(Vargsai, n, vm);
@@ -230,6 +227,11 @@ void automatinisBeGen() {
 	{
 		cout << "Neteisingas failo pavadinimas" << endl;
 	}
+}
+
+inline bool egzistuojaFailas(string& fname) {
+	ifstream f(fname.c_str());
+	return f.good();
 }
 
 void generuotifailus(string& failopavadinimas, int kiek, int nd) {
@@ -386,7 +388,7 @@ void buffFaila(string fname, std::stringstream& buffer) {
 	fp.close();
 };
 
-bool pagal_varda(Studentas& a, Studentas& b)
+bool rikiuotiVarda(Studentas& a, Studentas& b)
 {
 	return a.vardas() < b.vardas();
 }

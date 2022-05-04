@@ -1,5 +1,5 @@
 run: Source.o functions.o Studentas.o
-	g++ -o run Source.o -O1
+	g++ -o run Source.o -O3
 
 functions.o: functions.cpp
 	g++ -c functions.cpp

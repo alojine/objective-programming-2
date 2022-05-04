@@ -14,12 +14,13 @@ char konteinerioApsauga(char& a);
 
 //----------------------------------------------------------------Rikiavimai
 bool rikiuotiPazymi(Studentas& a, Studentas& b);
-bool pagal_varda(Studentas& a, Studentas& b);
+bool rikiuotiVarda(Studentas& a, Studentas& b);
 
 //----------------------------------------------------------------Su failais
 void automatinisGen();
 void automatinisBeGen();
 
+inline bool egzistuojaFailas(string& fname);
 void generuotifailus(string& failopavadinimas, int kiek, int nd);
 void skaitymas(vector<Studentas>& s, string fname);
 void paskirstymas(vector<Studentas>& s, vector<Studentas>& Kieti, vector<Studentas>& Vargsai, char vm, char stratType);

@@ -2,7 +2,6 @@
 #include "Studentas.h"
 #include "functions.h"
 
-
 Studentas::Studentas(const string& vardas, const string& pavarde) {
     vardas_ = vardas;
     pavarde_ = pavarde;
