@@ -11,7 +11,11 @@ private:
 	double vidurkis_;
 	double mediana_;
 public: 
-	Studentas(): egz_(0){}
+	Studentas(): egz_(0){}	// default constructor
+	Studentas(const Studentas &s);
+	Studentas &operator=(const Studentas &s);
+	~Studentas();	//destructor
+
 	Studentas(const string& vardas, const string& pavarde);
 	inline string vardas() const { return vardas_; }
 	inline string pavarde() const { return pavarde_; }
