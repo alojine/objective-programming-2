@@ -176,7 +176,7 @@ void automatinisGen() {
 	char st = charApsauga(st);
 	cout << endl;
 	do {
-		try {
+		//try {
 			vector<Studentas> s; vector<Studentas> Kieti; vector<Studentas> Vargsai;	//Klases
 			string fname = "studentai", n = "nuskriaustukai.txt", k = "kietiakai.txt";	//Failai
 			cout << "Iveskite studentu kieki: ";
@@ -205,10 +205,10 @@ void automatinisGen() {
 			char oneMore = charApsauga(oneMore);
 			gen = oneMore;
 			cout << endl;
-		}
-		catch (std::exception& e) {
-			cout << "Nera tokio failo" << endl;
-		}
+		//}
+		//catch (std::exception& e) {
+			//cout << "Nera tokio failo" << endl;
+		//}
 	} while (gen == 'y');
 }
 
