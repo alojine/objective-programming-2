@@ -188,3 +188,7 @@ Parametrai:
 |struct               |  0.54483 s    |  5.3933 s   |
 |class                |  0.59381 s    |  6.2704 s   |
 
+# v1.2
+
+**Studentas** klasei realizuotas rule of three, destructor, copy constructor, copy asignment operator
+
