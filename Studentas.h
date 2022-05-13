@@ -2,36 +2,54 @@
 
 #include "headers.h"
 
-class Studentas {
+class Zmogus{
+	protected:
+		string vardas_;
+		string pavarde_;
+	public:
+		explicit Zmogus(){
+			vardas_ = ""; pavarde_ = "";
+		};
+
+        explicit Zmogus(const string &vardas, const string & pavarde){
+			vardas_ = vardas; pavarde_ = pavarde;
+		};
+
+		virtual const string &getVardas() const = 0;
+		virtual const string &getPavarde() const = 0;
+		
+};
+
+
+class Studentas: public Zmogus{
 private:
-	string vardas_;
-	string pavarde_;
 	int egz_;
 	vector<int> p_;
 	double vidurkis_;
 	double mediana_;
-	string tipas_;
 public: 
 	Studentas(): egz_(0){}
-	Studentas(const string& vardas, const string& pavarde);
+
+	explicit Studentas(const string & vardas, const string & pavarde):Zmogus(vardas, pavarde){};
 	Studentas(const Studentas &s);
-	Studentas &operator=(const Studentas &s);	
 	~Studentas();
 
-	inline string vardas() const { return vardas_; }
-	inline string pavarde() const { return pavarde_; }
-	inline vector<int> gautiPazymius() const { return p_; }
-	inline double gvidurkis() const { return vidurkis_; }
-	inline double gmediana() const { return mediana_; }
-	inline int egzaminas() const { return egz_; }
-	inline string tipas() const { return tipas_; }
+	//operators
+	Studentas &operator=(const Studentas &s);
+	friend ostream &operator<<(ostream & output, const Studentas &s);
+	
+	// set
+	void setPazymi(int);
+	void setEgzaminas(int);
+	void setVidurki();
+	void setMediana();
 
-	void idetiVarda(string);
-	void idetiPavarde(string);
-	void idetiPazymi(int);
-	void isimtiPazymi();
-	void gautiEgzaminas(int);
-	void gautiVidurki();
-	void gautiMediana();
-	void gautiTipa(int);
+	// get
+	const string &getVardas() const override;
+	const string &getPavarde() const override;
+	inline vector<int> getPazymius() const { return p_; }
+	inline double getVidurkis() const { return vidurkis_; }
+	inline double getMediana() const { return mediana_; }
+	inline int getEgzaminas() const { return egz_; }
+	
 };

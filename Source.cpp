@@ -1,12 +1,11 @@
 #include "Studentas.h"
+#include "Studentas.cpp"
 #include "headers.h"
 #include "functions.h"
 #include "functions.cpp"
-#include "Studentas.cpp"
 
 int main()
-{
-
+{	
 	cout << "Ar norite skityti duomenis is failo? (y/n) ";
 	char howInput = charApsauga(howInput);
 

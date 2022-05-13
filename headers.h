@@ -27,6 +27,8 @@ using std::list;
 using std::endl;
 using std::ifstream;
 using std::ofstream;
+using std::ostream;
+using std::istream;
 using hrClock = std::chrono::high_resolution_clock;
 using durationDouble = std::chrono::duration<double>;
 
