@@ -192,3 +192,5 @@ Parametrai:
 
 **Studentas** klasei realizuotas rule of three, destructor, copy constructor, copy asignment operator
 
+#v1.5
+**Studentas** klasei pridetas isvesties operatorius, sukurta abstrakti klase **Zmogus**, kuria paveldi **Studentas**
