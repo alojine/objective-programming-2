@@ -198,3 +198,50 @@ Parametrai:
 
 # v2.0
 
+## Kaip paleisti programą unix operacinėje sistemoje: ##
+
+Reikia parsisiųsti *mingw32* arba *chocolatey*, arba bet kokią komandų eilutės paketų tvarkyklę leidžiančią naudoti *Makefile*. Parsisiųskite *v1.0 release* failus ir išsaugokite juos faile. Tą padarius nueikite į *Command Prompt* arba *PowerShell*, nueikite į vietą kurioje išsaugoti failai, parašykite **make**, kai sukompiliuos executable failą, iveskite **./run** ir programa bus paleista.
+
+## Kaip paleisti programą ne unix operacinėje sistemoje: ##
+
+Parsisiūskite *v1.0 release* zip failą ir jį išskleiskite. Tada nueikite į Setup aplanką ir paspauskite ant *Setupp* spuskite *next*, *next*, tada išsaugokite failą į jums norimą vieta, *finish* pabaikite instaliavimo procesą. Nueikite į ta vietą kur išsaugojote failą *OP V2.0* ir spauskite *OP V2.0.exe* ir programa bus paleista.
+
+## Programos realizacija: ##
+
+ - Ar norite skityti duomenis is failo? (y/n) **n**
+    - Jei norite kad programa isvestu vidurki iveskite 'y', jeigu mediana, iveskite 'n': **y** arba **n** 
+    - Iveskite studentu skaiciu: **(betkoks sveikas skaicius)**
+    - Iveskite studento varda: **(betkoks string tipo kintamasis)**
+    - Iveskite studento pavarde: **(betkoks string tipo kintamasis)**
+    - Iveskite pazymiu kieki: **(sveikas skaicius)**
+    - Jei noretumete ivesti dar pazymiu iveskite 'y', jei ne 'n': **n**
+      - Isvedama studento vardas, pavarde ir galutinis rezultaras
+      
+- Ar norite skityti duomenis is failo? (y/n) **y**
+    - Ar norite ivesti faila? (y/n) **n** - skaito is *studentai.txt* failo, **y** 
+    - Koki konteinerio tipa norite naudoti? vector - 'v', deque - 'd', list - 'l': *(konteinerio tipas)*
+    - Kokia skirstymo strategija norite naudoti? 1 - 'y', 2 - 'n': *(skirstymo strategija)*
+    - Iveskite studentu kieki: **(sveikas skaicius)**
+    - (Vidurkis/Mediana) - (y/n) 
+    
+Sukuriamas failas (studentai + studentu kiekis) į jį sugeneruojami vardai, pavardės, pažymiai, vėliau yra nuskaitomas failas, suskaiciuojamas galutinis vidurkis arba mediana, suskirtomas pasirinktas konteineris pagal skirstymo būdą, surikiuojami pagal vardą ir išvedami į 2 skirtingus failus *kietiakai.txt* studentai kurių vidurkis penki ir daugiau, ir *nuskriaustukai.txt* kurių vidurkis mažesnis nei penki.
+
+### Programos veikimo laikao palyginimas pagal optimizavimo flagus ###
+
+|                     |       1000      |      10000     |     100000    |   1000000   |   10000000  |
+| ------------------- | --------------- | -------------- | ------------- | ----------- | ----------- |
+|O1                   |   0.0523598 s   |   0.102543 s   |  0.61359 s    |  7.4304 s   |   80.193 s  |
+|O2                   |   0.0501326 s   |   0.096229 s   |  0.60365 s    |  6.8365 s   |   78.652 s  |
+|O3                   |   0.0491632 s   |   0.092973 s   |  0.59381 s    |  6.2704 s   |   77.663 s  |
+
+Parametrai:
+- CPU: Intel Core i5-10300H 2.5 GHz
+- SSD: 476GB SAMSUNG MZVLQ512HALU
+- RAM: 8GB 2933MHz
+
+##Kaip pasikeitė v2.0 programa nuo v1.0 versijos##
+- Sukurta *class* **Studentas** jei sukurtas destrutkorius, konstruktorius, kopijavimo konstruktorius, kopijavimo operatorius, isvesties operatorius.
+- Sukurta abstrakti *class* **Zmogus** kurią paveldi *class* **Studentas**.
+- Visos progromas dokumentacija aprašyta **Doxygen** aplanke *index.html* aplanke.
+- Atlikti unit testai, tastavimo failas **Test** aplanke.
+- Sukurtas setup failas **Setup** aplanke pasinaudojant *Advanced installer*.
