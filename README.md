@@ -239,7 +239,7 @@ Parametrai:
 - SSD: 476GB SAMSUNG MZVLQ512HALU
 - RAM: 8GB 2933MHz
 
-##Kaip pasikeitė v2.0 programa nuo v1.0 versijos##
+## Kaip pasikeitė v2.0 programa nuo v1.0 versijos ##
 - Sukurta *class* **Studentas** jei sukurtas destrutkorius, konstruktorius, kopijavimo konstruktorius, kopijavimo operatorius, isvesties operatorius.
 - Sukurta abstrakti *class* **Zmogus** kurią paveldi *class* **Studentas**.
 - Visos progromas dokumentacija aprašyta **Doxygen** aplanke *index.html* aplanke.
