@@ -195,3 +195,6 @@ Parametrai:
 # v1.5
 
 **Studentas** klasei pridetas isvesties operatorius, sukurta abstrakti klase **Zmogus**, kuria paveldi **Studentas** klase.
+
+# v2.0
+
